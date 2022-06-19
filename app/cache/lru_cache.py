@@ -35,7 +35,7 @@ class LRUCache(Generic[T]):
         """Removes items from the end of the cache until it is at capacity."""
         
         cache_keys = tuple(self._cache.keys())
-        rem_keys = cache_keys[200:]
+        rem_keys = cache_keys[self.capacity:]
         
         for key in rem_keys:
             self.remove(key)

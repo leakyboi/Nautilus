@@ -8,6 +8,7 @@ import asyncio
 
 CORO_FUNC = Callable[[Any], Awaitable]
 
+# TODO: Maybe look into running them all concurrently.
 async def execute_all(l: list[CORO_FUNC], args: tuple[Any]) -> None:
     """Sequentially executes all coroutines within `l` with `args`."""
     for func in l:
@@ -45,7 +46,8 @@ class EventManager:
         return decorator
     
     async def emit(self, event: str, *args: Any) -> Optional[Awaitable]:
-        """Emits an event to the event manager."""
+        """Emits an event to the event manager. Executes all associated callbacks in 
+        a new task sequentially."""
         
         event_list = self._events.get(event)
         

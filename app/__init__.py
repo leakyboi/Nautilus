@@ -4,3 +4,4 @@ from . import objects
 from . import packets
 from . import state
 from . import cache
+from . import db
