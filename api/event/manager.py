@@ -25,7 +25,7 @@ class EventManager:
         
         self._events: dict[str, list[CORO_FUNC]] = {}
         
-    def on(self, event: str, callback: CORO_FUNC) -> None:
+    def register(self, event: str, callback: CORO_FUNC) -> None:
         """Adds a callback to the event manager."""
         
         event_list = self._events.get(event)
@@ -34,6 +34,15 @@ class EventManager:
             self._events[event] = event_list = []
         
         event_list.append(callback)
+    
+    def on(self, event: str) -> Callable:
+        """Decorator that ads a callback to the event manager."""
+        
+        def decorator(func: CORO_FUNC) -> CORO_FUNC:
+            self.register(event, func)
+            return func
+        
+        return decorator
     
     async def emit(self, event: str, *args: Any) -> Optional[Awaitable]:
         """Emits an event to the event manager."""
